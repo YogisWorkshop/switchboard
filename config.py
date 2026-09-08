@@ -1,0 +1,56 @@
+import os
+from enum import Enum, auto
+
+ASSETS_DIR = os.path.join(os.path.dirname(__file__), "assets")
+
+GEAR_ICON_PATH = os.path.join(ASSETS_DIR, "gear.svg")
+GEAR_SIZE = 40
+
+GRID_SIZE = 80
+SCREEN_WIDTH = 1280
+SCREEN_HEIGHT = 800
+
+PANEL_COLS = SCREEN_WIDTH // GRID_SIZE
+PANEL_ROWS = SCREEN_HEIGHT // GRID_SIZE
+
+BACKGROUND_COLOR = "#B8DBB7"
+
+TILE_COLOR = "#99cc99"
+TILE_BORDER_COLOR = "#808080"
+TILE_BORDER_WIDTH = 0
+TRACK_COLOR = "#000000"
+INACTIVE_TRACK_COLOR = "#999999"
+SELECTION_HIGHLIGHT_COLOR = "#00ffff"
+
+
+TRACK_WIDTH = 12
+
+APPEARANCE_SPECS = [
+    {"key": "TILE_COLOR", "label": "Tile Color", "type": "color"},
+    {"key": "BACKGROUND_COLOR", "label": "Background Color", "type": "color"},
+    {"key": "TRACK_COLOR", "label": "Track Color", "type": "color"},
+    {"key": "INACTIVE_TRACK_COLOR", "label": "Inactive Track Color", "type": "color"},
+    {"key": "TRACK_WIDTH", "label": "Track Width", "type": int, "min": 1, "max": 30},
+    {"key": "TILE_BORDER_COLOR", "label": "Tile Border Color", "type": "color"},
+    {"key": "TILE_BORDER_WIDTH", "label": "Tile Border Width", "type": int, "min": 0, "max": 10},
+    {"key": "SELECTION_HIGHLIGHT_COLOR", "label": "Secection Highlight Color", "type": "color"},
+]
+
+SYSTEM_SETTINGS = [
+    {"key": "SCREEN_WIDTH", "label": "Screnn Width", "type": int, "min": 320, "max": 7680},
+    {"key": "SCREEN_HEIGHT", "label": "Screnn Height", "type": int, "min": 240, "max": 4320},
+    {"key": "GRID_SIZE", "label": "Grid Size", "type": int, "min": 20, "max": 300}
+]
+
+SETTINGS_SPECS = APPEARANCE_SPECS + SYSTEM_SETTINGS
+
+DEFAULT_SETTINGS = {spec["key"]: globals()[spec["key"]] for spec in SETTINGS_SPECS}
+
+class PanelMode(Enum):
+    EDIT = auto()
+    OPERATE = auto()
+
+class Tool(Enum):
+    SELECT = auto()
+    PLACE = auto()
+    MOVE = auto()
