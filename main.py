@@ -12,15 +12,28 @@ QLineEdit, QSpinBox, QComboBox {
     min-height: 40px;
     font-size: 20px;
 }
-
 QLabel {
     font-size: 20px;
 }
-
 QTabBar::tab {
     font-size: 20px;
     min-height: 40px;
     min-width: 80px;
+}
+QSpinBox::up-button, QSpinBox::down-button {
+    width: 40px;
+    height: 20px;
+}
+QScrollBar:vertical {
+    width: 30px;
+}
+QScrollBar::handle:vertical {
+    background: #999999;
+    min-height: 40px;
+    border-radius: 6px;
+}
+QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
+    height: 0px;
 }
 """
 

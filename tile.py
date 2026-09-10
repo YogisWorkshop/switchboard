@@ -3,7 +3,7 @@ from PySide6.QtGui import QBrush, QColor, QPen, QPainter
 from PySide6.QtCore import Qt, QRectF, QPointF
 
 import config
-from config import GRID_SIZE, PanelMode, Tool
+from config import PanelMode, Tool
 
 
 class Tile(QGraphicsItem):
@@ -12,16 +12,16 @@ class Tile(QGraphicsItem):
     def __init__(self):
         super().__init__()
         self.selected = False
-        self.setTransformOriginPoint(GRID_SIZE / 2, GRID_SIZE / 2)
+        self.setTransformOriginPoint(config.GRID_SIZE / 2, config.GRID_SIZE / 2)
 
         for spec in self.property_specs:
             setattr(self, spec["key"], spec["default"])
 
     def boundingRect(self):
-        return QRectF(0, 0, GRID_SIZE, GRID_SIZE)
+        return QRectF(0, 0, config.GRID_SIZE, config.GRID_SIZE)
 
     def edge_point(self, direction):
-        s = GRID_SIZE
+        s = config.GRID_SIZE
         points = {
             "N": (s / 2, 0),
             "S": (s / 2, s),
@@ -109,5 +109,14 @@ class Tile(QGraphicsItem):
             setattr(tile, spec["key"], tile_value)
         return tile
 
+class Empty(Tile):
+    def __init__(self):
+        super().__init__()
+
+    def on_tap(self):
+        pass
+    
+    def draw(self, painter):
+        self.draw_tile_background(painter)
 
             

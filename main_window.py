@@ -1,7 +1,7 @@
 from PySide6.QtWidgets import (
     QMainWindow, QGraphicsView, QWidget, QFrame,
     QHBoxLayout, QVBoxLayout, QGridLayout, QPushButton)
-from PySide6.QtGui import QIcon
+from PySide6.QtGui import QIcon, QShortcut, QKeySequence
 from PySide6.QtCore import Qt, QTimer, QSize
 
 from panel_scene import PanelScene
@@ -12,21 +12,26 @@ from tile_icon import render_tile_icon
 from properties_dialog import PropertiesDialog
 from settings_dialog import SettingsDialog
 import config
-from config import (GRID_SIZE, SCREEN_WIDTH, SCREEN_HEIGHT,
-                    PANEL_COLS,PANEL_ROWS, GEAR_SIZE, GEAR_ICON_PATH,
-                    PanelMode, Tool)    
+from config import (SCREEN_WIDTH, SCREEN_HEIGHT, TILE_ICON_SIZE,
+                    GEAR_SIZE, GEAR_ICON_PATH,
+                    PanelMode, Tool,
+                    recompute_derived_settings)    
 
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         load_settings()
+        recompute_derived_settings()
 
         self.setWindowTitle("Switchboard")
         self.resize(SCREEN_WIDTH, SCREEN_HEIGHT)
         self.setStyleSheet(f"background-color: {config.BACKGROUND_COLOR};")
 
-        self.scene = PanelScene(GRID_SIZE)
-        self.scene.setSceneRect(0, 0, PANEL_COLS * GRID_SIZE, PANEL_ROWS * GRID_SIZE)
+        self.quit_shortcut = QShortcut(QKeySequence("Ctrl+Q"), self)
+        self.quit_shortcut.activated.connect(self.close)
+
+        self.scene = PanelScene(config.GRID_SIZE)
+        self.scene.setSceneRect(0, 0, config.PANEL_COLS * config.GRID_SIZE, config.PANEL_ROWS * config.GRID_SIZE)
 
         self.view = QGraphicsView(self.scene)
         self.view.setAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignTop)
@@ -70,7 +75,7 @@ class MainWindow(QMainWindow):
         grid = QGridLayout(palette)
         grid.setAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignTop)
 
-        button_size = GRID_SIZE + 10
+        button_size = TILE_ICON_SIZE + 10
         spacing = 1
         margin = 0
 
@@ -84,8 +89,8 @@ class MainWindow(QMainWindow):
         for index, tile_type in enumerate(tile_types):
             button = QPushButton()
             button.setIcon(render_tile_icon(tile_type()))
-            button.setIconSize(QSize(GRID_SIZE, GRID_SIZE))
-            button.setFixedSize(GRID_SIZE + 10, GRID_SIZE + 10)
+            button.setIconSize(QSize(TILE_ICON_SIZE, TILE_ICON_SIZE))
+            button.setFixedSize(TILE_ICON_SIZE + 10, TILE_ICON_SIZE + 10)
             button.setCheckable(True)
             button.setStyleSheet(f"""
                         QPushButton:checked {{
@@ -107,7 +112,7 @@ class MainWindow(QMainWindow):
         palette = QWidget()
         layout = QHBoxLayout(palette)
 
-        self.exit_button = QPushButton("Exit")
+        self.exit_button = QPushButton("Exit/Save")
         self.exit_button.clicked.connect(self.toggle_mode)
 
         self.rotate_button = QPushButton("Rotate")
@@ -239,7 +244,7 @@ class MainWindow(QMainWindow):
         dialog = SettingsDialog(parent=self)
         if dialog.exec() == SettingsDialog.DialogCode.Accepted:
             dialog.apply_settings()
-            save_settings()
+            save_settings(overrides=dialog.pending_system_values())
             self.scene.update()
             self.refresh_tile_icons()
 

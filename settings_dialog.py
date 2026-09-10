@@ -1,6 +1,7 @@
 from PySide6.QtWidgets import (
     QDialog, QFormLayout, QSpinBox, QPushButton, QTabWidget, 
-    QColorDialog, QDialogButtonBox, QWidget, QVBoxLayout, QLabel
+    QColorDialog, QDialogButtonBox, QWidget, QVBoxLayout, QLabel,
+    QScrollArea, QHBoxLayout
 )
 from PySide6.QtGui import QColor
 
@@ -11,12 +12,13 @@ class SettingsDialog(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setWindowTitle("Settings")
+        self.setMinimumWidth(700)
 
         self.fields = {}
 
         tabs = QTabWidget()
         tabs.addTab(self._build_settings_page(APPEARANCE_SPECS), "Appearance")
-        tabs.addTab(self._build_system_page(), "System")
+        tabs.addTab(self._build_system_page(SYSTEM_SETTINGS), "System")
 
         buttons = QDialogButtonBox(
             QDialogButtonBox.StandardButton.Ok | QDialogButtonBox.StandardButton.Cancel
@@ -30,41 +32,84 @@ class SettingsDialog(QDialog):
         
 
     def _build_settings_page(self, specs):
-        page = QWidget()
-        layout = QFormLayout(page)
-        for spec in specs:
+        content = QWidget()
+        outer = QVBoxLayout(content)
+
+        columns_widget = QWidget()
+        columns_layout = QHBoxLayout(columns_widget)
+
+        left_form = QFormLayout()
+        right_form = QFormLayout()
+
+        midpoint = (len(specs) + 1) // 2
+        for spec in specs[:midpoint]:
             field = self._build_field(spec)
             self.fields[spec["key"]] = field
-            layout.addRow(spec["label"], field)
+            left_form.addRow(spec["label"], field)
+
+        for spec in specs[midpoint:]:
+            field = self._build_field(spec)
+            self.fields[spec["key"]] = field
+            right_form.addRow(spec["label"], field)
+
+        columns_layout.addLayout(left_form)
+        columns_layout.addLayout(right_form)
 
         reset_button = QPushButton("Reset Defaults")
         reset_button.clicked.connect(lambda: self.reset_to_defaults(specs))
-        layout.addRow(reset_button)
-        
-        return page
 
-    def _build_system_page(self):
-        page = QWidget()
-        layout = QFormLayout(page)
+        outer.addWidget(columns_widget)
+        outer.addWidget(reset_button)
+
+        scroll = QScrollArea()
+        scroll.setWidget(content)
+        scroll.setWidgetResizable(True)
+        
+        return scroll
+
+    def _build_system_page(self, specs):
+        content = QWidget()
+        outer = QVBoxLayout(content)
+
+        columns_widget = QWidget()
+        columns_layout = QHBoxLayout(columns_widget)
+
+        left_form = QFormLayout()
+        right_form = QFormLayout()
+
+        midpoint = (len(specs) + 1) // 2
+        for spec in specs[:midpoint]:
+            field = self._build_field(spec)
+            self.fields[spec["key"]] = field
+            left_form.addRow(spec["label"], field)
+
+        for spec in specs[midpoint:]:
+            field = self._build_field(spec)
+            self.fields[spec["key"]] = field
+            right_form.addRow(spec["label"], field)
+
+        columns_layout.addLayout(left_form)
+        columns_layout.addLayout(right_form)
 
         note = QLabel("Changes on this tab take effect after restarting the app.")
         note.setWordWrap(True)
-        layout.addRow(note)
 
-        for spec in SYSTEM_SETTINGS:
-            field = self._build_field(spec)
-            self.fields[spec["key"]] = field
-            layout.addRow(spec["label"], field)
+        outer.addWidget(note)
+        outer.addWidget(columns_widget)
 
         reset_button = QPushButton("Reset Defaults")
         reset_button.clicked.connect(lambda: self.reset_to_defaults(SYSTEM_SETTINGS))
-        layout.addRow(reset_button)
+        outer.addWidget(reset_button)
 
         quit_button = QPushButton("Quit App")
         quit_button.clicked.connect(self._quit_app)
-        layout.addRow(quit_button)
+        outer.addWidget(quit_button)
 
-        return page
+        scroll = QScrollArea()
+        scroll.setWidget(content)
+        scroll.setWidgetResizable(True)
+
+        return scroll
 
     def _quit_app(self):
         self.parent().close()
@@ -98,11 +143,21 @@ class SettingsDialog(QDialog):
             self._update_color_button(button, color.name())
 
     def apply_settings(self):
-        for key, field in self.fields.items():
+        for spec in APPEARANCE_SPECS:
+            field = self.fields[spec["key"]]
             if isinstance(field, QSpinBox):
-                setattr(config, key, field.value())
+                setattr(config, spec["key"], field.value())
             elif isinstance(field, QPushButton):
-                setattr(config, key, field.property("color"))
+                setattr(config, spec["key"], field.property("color"))
+
+    def pending_system_values(self):
+        values = {}
+        for spec in SYSTEM_SETTINGS:
+            field = self.fields[spec["key"]]
+            if isinstance(field, QSpinBox):
+                values[spec["key"]] = field.value()
+        return values
+
 
     def reset_to_defaults(self, specs):
         for spec in specs:

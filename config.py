@@ -10,6 +10,8 @@ GRID_SIZE = 80
 SCREEN_WIDTH = 1280
 SCREEN_HEIGHT = 800
 
+TILE_ICON_SIZE = 80
+
 PANEL_COLS = SCREEN_WIDTH // GRID_SIZE
 PANEL_ROWS = SCREEN_HEIGHT // GRID_SIZE
 
@@ -31,8 +33,8 @@ APPEARANCE_SPECS = [
     {"key": "TRACK_COLOR", "label": "Track Color", "type": "color"},
     {"key": "INACTIVE_TRACK_COLOR", "label": "Inactive Track Color", "type": "color"},
     {"key": "TRACK_WIDTH", "label": "Track Width", "type": int, "min": 1, "max": 30},
-    {"key": "TILE_BORDER_COLOR", "label": "Tile Border Color", "type": "color"},
     {"key": "TILE_BORDER_WIDTH", "label": "Tile Border Width", "type": int, "min": 0, "max": 10},
+    {"key": "TILE_BORDER_COLOR", "label": "Tile Border Color", "type": "color"},
     {"key": "SELECTION_HIGHLIGHT_COLOR", "label": "Secection Highlight Color", "type": "color"},
 ]
 
@@ -54,3 +56,8 @@ class Tool(Enum):
     SELECT = auto()
     PLACE = auto()
     MOVE = auto()
+
+def recompute_derived_settings():
+    global PANEL_COLS, PANEL_ROWS
+    PANEL_COLS = SCREEN_WIDTH // GRID_SIZE
+    PANEL_ROWS = SCREEN_HEIGHT // GRID_SIZE

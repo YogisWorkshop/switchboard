@@ -30,9 +30,9 @@
     {
       "type": "TurnoutRight",
       "rotation": 0.0,
-      "label": "",
-      "name": "",
-      "address": 0,
+      "label": "TO02",
+      "name": "Turnout 2",
+      "address": 2,
       "protocol": "DCC",
       "col": 3,
       "row": 3
@@ -403,6 +403,12 @@
       "type": "Straight",
       "rotation": 0.0,
       "col": 8,
+      "row": 5
+    },
+    {
+      "type": "Empty",
+      "rotation": 0.0,
+      "col": 3,
       "row": 5
     }
   ]

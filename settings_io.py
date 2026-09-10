@@ -6,8 +6,10 @@ from config import SETTINGS_SPECS
 
 SETTINGS_FILE = os.path.join(os.path.dirname(__file__), "settings.json")
 
-def save_settings():
+def save_settings(overrides=None):
     data = {spec["key"]: getattr(config, spec["key"]) for spec in SETTINGS_SPECS}
+    if overrides:
+        data.update(overrides)
     with open(SETTINGS_FILE, "w") as f:
         json.dump(data, f, indent=2)
 
