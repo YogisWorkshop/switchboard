@@ -192,12 +192,6 @@
     {
       "type": "Straight",
       "rotation": 0.0,
-      "col": 5,
-      "row": 5
-    },
-    {
-      "type": "Straight",
-      "rotation": 0.0,
       "col": 6,
       "row": 5
     },
@@ -210,6 +204,10 @@
     {
       "type": "Turnout3Way",
       "rotation": 180.0,
+      "label": "",
+      "name": "",
+      "address": 0,
+      "protocol": "DCC",
       "col": 13,
       "row": 4
     },
@@ -250,18 +248,6 @@
       "row": 2
     },
     {
-      "type": "Diagonal",
-      "rotation": 0.0,
-      "col": 11,
-      "row": 1
-    },
-    {
-      "type": "Diagonal",
-      "rotation": 90.0,
-      "col": 13,
-      "row": 5
-    },
-    {
       "type": "Straight",
       "rotation": 0.0,
       "col": 12,
@@ -272,12 +258,6 @@
       "rotation": 0.0,
       "col": 12,
       "row": 5
-    },
-    {
-      "type": "Straight",
-      "rotation": 0.0,
-      "col": 14,
-      "row": 4
     },
     {
       "type": "Straight",
@@ -302,12 +282,6 @@
       "rotation": 0.0,
       "col": 11,
       "row": 5
-    },
-    {
-      "type": "Straight",
-      "rotation": 0.0,
-      "col": 11,
-      "row": 4
     },
     {
       "type": "Straight",
@@ -410,6 +384,154 @@
       "rotation": 0.0,
       "col": 3,
       "row": 5
+    },
+    {
+      "type": "TurnoutRight",
+      "rotation": 0.0,
+      "label": "",
+      "name": "",
+      "address": 0,
+      "protocol": "DCC",
+      "col": 5,
+      "row": 5
+    },
+    {
+      "type": "Diagonal",
+      "rotation": 180.0,
+      "col": 5,
+      "row": 6
+    },
+    {
+      "type": "Straight",
+      "rotation": 0.0,
+      "col": 6,
+      "row": 6
+    },
+    {
+      "type": "Straight",
+      "rotation": 0.0,
+      "col": 7,
+      "row": 6
+    },
+    {
+      "type": "Straight",
+      "rotation": 0.0,
+      "col": 9,
+      "row": 6
+    },
+    {
+      "type": "Straight",
+      "rotation": 0.0,
+      "col": 10,
+      "row": 6
+    },
+    {
+      "type": "Straight",
+      "rotation": 0.0,
+      "col": 11,
+      "row": 6
+    },
+    {
+      "type": "TrackButton",
+      "rotation": 0.0,
+      "label": "",
+      "name": "",
+      "address": 0,
+      "protocol": "DCC",
+      "color": "Green",
+      "mode": "Toggle",
+      "col": 8,
+      "row": 6
+    },
+    {
+      "type": "Button",
+      "rotation": 0.0,
+      "label": "",
+      "name": "",
+      "address": 0,
+      "protocol": "DCC",
+      "color": "Red",
+      "mode": "Momentary",
+      "col": 6,
+      "row": 7
+    },
+    {
+      "type": "Button",
+      "rotation": 0.0,
+      "label": "",
+      "name": "",
+      "address": 0,
+      "protocol": "DCC",
+      "color": "Blue",
+      "mode": "Toggle",
+      "col": 9,
+      "row": 7
+    },
+    {
+      "type": "TurnoutLeft",
+      "rotation": 180.0,
+      "label": "",
+      "name": "",
+      "address": 0,
+      "protocol": "DCC",
+      "col": 14,
+      "row": 4
+    },
+    {
+      "type": "DiagonalDouble",
+      "rotation": 90.0,
+      "col": 13,
+      "row": 5
+    },
+    {
+      "type": "Diagonal",
+      "rotation": 90.0,
+      "col": 14,
+      "row": 5
+    },
+    {
+      "type": "Diagonal",
+      "rotation": 90.0,
+      "col": 13,
+      "row": 6
+    },
+    {
+      "type": "Straight",
+      "rotation": 0.0,
+      "col": 12,
+      "row": 1
+    },
+    {
+      "type": "StraightBumper",
+      "rotation": 0.0,
+      "col": 13,
+      "row": 1
+    },
+    {
+      "type": "TurnoutRight",
+      "rotation": 0.0,
+      "label": "",
+      "name": "",
+      "address": 0,
+      "protocol": "DCC",
+      "col": 11,
+      "row": 1
+    },
+    {
+      "type": "Straight",
+      "rotation": 0.0,
+      "col": 12,
+      "row": 6
+    },
+    {
+      "type": "Signal",
+      "rotation": 0.0,
+      "label": "",
+      "name": "",
+      "address": 0,
+      "protocol": "DCC",
+      "col": 11,
+      "row": 4
     }
   ]
 }

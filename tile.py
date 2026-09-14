@@ -35,6 +35,9 @@ class Tile(QGraphicsItem):
         }
         return QPointF(*points[direction])
 
+    def point_at(self, fx, fy):
+        return QPointF(fx * config.GRID_SIZE, fy * config.GRID_SIZE)
+
     def paint(self, painter, option, widget=None):
         painter.setRenderHint(QPainter.RenderHint.Antialiasing)
         painter.setClipRect(self.boundingRect())
@@ -43,7 +46,7 @@ class Tile(QGraphicsItem):
             self._draw_selection_highlight(painter)
 
     def draw(self, painter):
-        raise NotImplementedError("Subclasses must implement draw()")
+        pass
 
     def draw_tile_background(self, painter):
         painter.setBrush(QBrush(QColor(config.TILE_COLOR)))
@@ -67,6 +70,20 @@ class Tile(QGraphicsItem):
         painter.setPen(pen)
         painter.drawLine(self.edge_point(start), self.edge_point(end))
 
+    def draw_segment(self, painter, start_point, end_point):
+        pen = QPen(QColor(config.TRACK_COLOR))
+        pen.setWidth(config.TRACK_WIDTH)
+        pen.setCapStyle(Qt.PenCapStyle.FlatCap)
+        painter.setPen(pen)
+        painter.drawLine(start_point, end_point)
+
+    def draw_signal_element(self, painter, start_point, end_point, width):
+            pen = QPen(QColor(config.TRACK_COLOR))
+            pen.setWidth(width)
+            pen.setCapStyle(Qt.PenCapStyle.RoundCap)
+            painter.setPen(pen)
+            painter.drawLine(start_point, end_point)
+
     def rotate_cw(self):
         self.setRotation((self.rotation() + 90) % 360)
 
@@ -88,8 +105,19 @@ class Tile(QGraphicsItem):
         elif scene.tool == Tool.MOVE:
             pass # moving torgets empty cells only; handled at scene level
 
+    def mouseReleaseEvent(self, event):
+        scene = self.scene()
+        if scene is None:
+            return
+        if scene.mode == PanelMode.OPERATE:
+            self.on_release()
+            self.update()
+
+    def on_release(self):
+        pass
+
     def on_tap(self):
-        raise NotImplementedError("Subclass must be implement on_tap()")    
+        pass    
 
     def to_dict(self):
         data = {
@@ -119,4 +147,46 @@ class Empty(Tile):
     def draw(self, painter):
         self.draw_tile_background(painter)
 
-            
+class Button(Tile):
+    property_specs = [
+            {"key": "label", "label": "Label", "type": str, "max_length": 10, "default": ""},
+            {"key": "name", "label": "Name", "type": str, "default": ""}, 
+            {"key": "address", "label": "Address", "type": int, "default": 0},
+            {"key": "protocol", "label": "Protocol", "type": "choice", "choices": ["DCC", "MM"], "default": "DCC"},
+            {"key": "color", "label": "Color", "type": "choice", "choices": ["Red", "Green", "Blue"], "default": "Blue"},
+            {"key": "mode", "label": "Mode", "type": "choice", "choices": ["Toggle", "Momentary"], "default": "Toggle"},
+            ]
+    
+    def __init__(self):
+        super().__init__()
+        self.on_state = False
+
+    def on_tap(self):
+        if self.mode == "Momentary":
+            self.on_state = True
+        else:
+            self.on_state = not self.on_state
+
+    def on_release(self):
+        if self.mode == "Momentary":
+            self.on_state = False
+
+    def draw(self, painter):
+        self.draw_tile_background(painter)
+
+        on_color, off_color = self._colors_for(self.color)
+        fill_color = QColor(on_color) if self.on_state else QColor(off_color)
+
+        painter.setBrush(QBrush(fill_color))
+        painter.setPen(Qt.PenStyle.NoPen)
+        center = self.point_at(0.5, 0.5)
+        radius = config.GRID_SIZE * 0.25
+        painter.drawEllipse(center, radius, radius)    
+
+    def _colors_for(self, color_name):
+        mapping = {
+            "Red": (config.BUTTON_COLOR_RED_ON, config.BUTTON_COLOR_RED_OFF),
+            "Green": (config.BUTTON_COLOR_GREEN_ON, config.BUTTON_COLOR_GREEN_OFF),
+            "Blue": (config.BUTTON_COLOR_BLUE_ON, config.BUTTON_COLOR_BLUE_OFF),
+        }
+        return mapping[color_name]
