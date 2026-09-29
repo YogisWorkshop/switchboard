@@ -4,9 +4,11 @@ from PySide6.QtWidgets import (
     QScrollArea, QHBoxLayout
 )
 from PySide6.QtGui import QColor
+from PySide6.QtCore import Qt
 
 import config
 from config import APPEARANCE_SPECS, SYSTEM_SETTINGS
+from settings_io import load_saved_settings
 
 class SettingsDialog(QDialog):
     def __init__(self, parent=None):
@@ -15,6 +17,7 @@ class SettingsDialog(QDialog):
         self.setMinimumWidth(700)
 
         self.fields = {}
+        self.saved_settings = load_saved_settings()
 
         tabs = QTabWidget()
         tabs.addTab(self._build_settings_page(APPEARANCE_SPECS), "Appearance")
@@ -64,6 +67,7 @@ class SettingsDialog(QDialog):
         scroll = QScrollArea()
         scroll.setWidget(content)
         scroll.setWidgetResizable(True)
+        scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         
         return scroll
 
@@ -108,6 +112,7 @@ class SettingsDialog(QDialog):
         scroll = QScrollArea()
         scroll.setWidget(content)
         scroll.setWidgetResizable(True)
+        scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
 
         return scroll
 
@@ -115,7 +120,7 @@ class SettingsDialog(QDialog):
         self.parent().close()
 
     def _build_field(self, spec):
-        current_value = getattr(config, spec["key"])
+        current_value = self.saved_settings.get(spec["key"], getattr(config, spec["key"]))
 
         if spec["type"] == int:
             field = QSpinBox()

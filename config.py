@@ -31,6 +31,9 @@ BUTTON_COLOR_GREEN_OFF = "#004d00"
 BUTTON_COLOR_BLUE_ON = "#3399ff"
 BUTTON_COLOR_BLUE_OFF = "#003366"
 
+SIGNAL_COLOR_RED = "#FF3333"
+SIGNAL_COLOR_GREEN = "#33CC33"
+
 
 TRACK_WIDTH = 12
 
@@ -42,12 +45,12 @@ APPEARANCE_SPECS = [
     {"key": "TRACK_WIDTH", "label": "Track Width", "type": int, "min": 1, "max": 30},
     {"key": "TILE_BORDER_WIDTH", "label": "Tile Border Width", "type": int, "min": 0, "max": 10},
     {"key": "TILE_BORDER_COLOR", "label": "Tile Border Color", "type": "color"},
-    {"key": "SELECTION_HIGHLIGHT_COLOR", "label": "Secection Highlight Color", "type": "color"},
+    {"key": "SELECTION_HIGHLIGHT_COLOR", "label": "Selection Highlight Color", "type": "color"},
 ]
 
 SYSTEM_SETTINGS = [
-    {"key": "SCREEN_WIDTH", "label": "Screnn Width", "type": int, "min": 320, "max": 7680},
-    {"key": "SCREEN_HEIGHT", "label": "Screnn Height", "type": int, "min": 240, "max": 4320},
+    {"key": "SCREEN_WIDTH", "label": "Screen Width", "type": int, "min": 320, "max": 7680},
+    {"key": "SCREEN_HEIGHT", "label": "Screen Height", "type": int, "min": 240, "max": 4320},
     {"key": "GRID_SIZE", "label": "Grid Size", "type": int, "min": 20, "max": 300}
 ]
 

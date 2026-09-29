@@ -22,3 +22,10 @@ def load_settings():
 
     for key, value in data.items():
         setattr(config, key, value)
+
+def load_saved_settings():
+    try:
+        with open(SETTINGS_FILE, "r") as f:
+            return json.load(f)
+    except FileNotFoundError:
+            return {}

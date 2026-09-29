@@ -137,15 +137,15 @@ class Tile(QGraphicsItem):
             setattr(tile, spec["key"], tile_value)
         return tile
 
-class Empty(Tile):
-    def __init__(self):
-        super().__init__()
+# class Empty(Tile):
+#     def __init__(self):
+#         super().__init__()
 
-    def on_tap(self):
-        pass
+#     def on_tap(self):
+#         pass
     
-    def draw(self, painter):
-        self.draw_tile_background(painter)
+#     def draw(self, painter):
+#         self.draw_tile_background(painter)
 
 class Button(Tile):
     property_specs = [

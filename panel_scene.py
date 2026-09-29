@@ -4,8 +4,7 @@ from PySide6.QtCore import Signal
 
 from tile_registry import TILE_CLASSES
 import config
-from config import (TILE_BORDER_WIDTH,
-                     PanelMode, Tool)
+from config import PanelMode, Tool
 
 class PanelScene(QGraphicsScene):
     selection_changed = Signal(object)
@@ -25,10 +24,10 @@ class PanelScene(QGraphicsScene):
         scene_rect = self.sceneRect()
         draw_rect = rect.intersected(scene_rect)
 
-        painter.fillRect(draw_rect, QColor(config.BACKGROUND_COLOR))
+        painter.fillRect(draw_rect, QColor(config.TILE_COLOR))
 
         pen = QPen(QColor(config.TILE_BORDER_COLOR))
-        pen.setWidth(TILE_BORDER_WIDTH)
+        pen.setWidth(config.TILE_BORDER_WIDTH)
         painter.setPen(pen)
 
         left = int(draw_rect.left()) - (int(draw_rect.left()) % self.grid_size)

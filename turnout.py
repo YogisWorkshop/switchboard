@@ -114,26 +114,24 @@ class Signal(Tile):
         painter.setPen(pen)
         painter.drawLine(self.edge_point("W"), self.edge_point("E"))
 
-        signal_head_pos_y = ((config.GRID_SIZE * 0.75) + (config.TRACK_WIDTH / 4)) / 80
-        signal_head_bottom = self.point_at(0.7, signal_head_pos_y)
-        signal_head_top = self.point_at(0.4, signal_head_pos_y)
-        width = config.TRACK_WIDTH * 1.5
+        signal_pos_y = ((config.GRID_SIZE * 0.75) + (config.TRACK_WIDTH / 4)) / config.GRID_SIZE
+        signal_head_bottom = self.point_at(0.75, signal_pos_y)
+        signal_head_top = self.point_at(0.5, signal_pos_y)
+        signal_base_bottom = self.point_at(0.15, signal_pos_y)
+        signal_base_top = self.point_at(0.5, signal_pos_y)
+        width = config.TRACK_WIDTH * 1.6
+        signal_base_width = config.TRACK_WIDTH * 0.3
         self.draw_signal_element(painter, signal_head_bottom, signal_head_top, width)
+        self.draw_signal_element(painter, signal_base_bottom, signal_base_top, signal_base_width)
+
+        color = config.SIGNAL_COLOR_RED if self.show_red else config.SIGNAL_COLOR_GREEN
+        painter.setBrush(QBrush(QColor(color)))
+        painter.setPen(Qt.PenStyle.NoPen)
+        center = self.point_at(0.5 if self.show_red else 0.75, signal_pos_y)
+        radius = config.TRACK_WIDTH / 2
+        painter.drawEllipse(center, radius, radius)
 
 
-
-        if self.show_red:
-            painter.setBrush(QBrush("#ff3333"))
-            painter.setPen(Qt.PenStyle.NoPen)
-            center = self.point_at(0.5, signal_head_pos_y)
-            radius = config.TRACK_WIDTH / 2
-            painter.drawEllipse(center, radius, radius)
-        else:
-            painter.setBrush(QBrush("#33cc33"))
-            painter.setPen(Qt.PenStyle.NoPen)
-            center = self.point_at(0.7, signal_head_pos_y)
-            radius = config.TRACK_WIDTH / 2
-            painter.drawEllipse(center, radius, radius)
   
     
 

@@ -38,26 +38,6 @@
       "row": 3
     },
     {
-      "type": "TurnoutRight",
-      "rotation": 180.0,
-      "label": "",
-      "name": "",
-      "address": 0,
-      "protocol": "DCC",
-      "col": 3,
-      "row": 4
-    },
-    {
-      "type": "TurnoutRight",
-      "rotation": 0.0,
-      "label": "",
-      "name": "",
-      "address": 0,
-      "protocol": "DCC",
-      "col": 4,
-      "row": 4
-    },
-    {
       "type": "Straight",
       "rotation": 0.0,
       "col": 2,
@@ -380,12 +360,6 @@
       "row": 5
     },
     {
-      "type": "Empty",
-      "rotation": 0.0,
-      "col": 3,
-      "row": 5
-    },
-    {
       "type": "TurnoutRight",
       "rotation": 0.0,
       "label": "",
@@ -399,12 +373,6 @@
       "type": "Diagonal",
       "rotation": 180.0,
       "col": 5,
-      "row": 6
-    },
-    {
-      "type": "Straight",
-      "rotation": 0.0,
-      "col": 6,
       "row": 6
     },
     {
@@ -442,30 +410,6 @@
       "mode": "Toggle",
       "col": 8,
       "row": 6
-    },
-    {
-      "type": "Button",
-      "rotation": 0.0,
-      "label": "",
-      "name": "",
-      "address": 0,
-      "protocol": "DCC",
-      "color": "Red",
-      "mode": "Momentary",
-      "col": 6,
-      "row": 7
-    },
-    {
-      "type": "Button",
-      "rotation": 0.0,
-      "label": "",
-      "name": "",
-      "address": 0,
-      "protocol": "DCC",
-      "color": "Blue",
-      "mode": "Toggle",
-      "col": 9,
-      "row": 7
     },
     {
       "type": "TurnoutLeft",
@@ -531,6 +475,76 @@
       "address": 0,
       "protocol": "DCC",
       "col": 11,
+      "row": 4
+    },
+    {
+      "type": "Button",
+      "rotation": 0.0,
+      "label": "",
+      "name": "",
+      "address": 0,
+      "protocol": "DCC",
+      "color": "Red",
+      "mode": "Momentary",
+      "col": 10,
+      "row": 7
+    },
+    {
+      "type": "TurnoutRight",
+      "rotation": 0.0,
+      "label": "",
+      "name": "",
+      "address": 0,
+      "protocol": "DCC",
+      "col": 6,
+      "row": 6
+    },
+    {
+      "type": "Diagonal",
+      "rotation": 180.0,
+      "col": 6,
+      "row": 7
+    },
+    {
+      "type": "Straight",
+      "rotation": 0.0,
+      "col": 7,
+      "row": 7
+    },
+    {
+      "type": "Straight",
+      "rotation": 0.0,
+      "col": 8,
+      "row": 7
+    },
+    {
+      "type": "StraightBumper",
+      "rotation": 0.0,
+      "col": 9,
+      "row": 7
+    },
+    {
+      "type": "Button",
+      "rotation": 0.0,
+      "label": "",
+      "name": "",
+      "address": 0,
+      "protocol": "DCC",
+      "color": "Blue",
+      "mode": "Toggle",
+      "col": 11,
+      "row": 7
+    },
+    {
+      "type": "CrossingRight",
+      "rotation": 180.0,
+      "col": 3,
+      "row": 4
+    },
+    {
+      "type": "CrossingRight",
+      "rotation": 0.0,
+      "col": 4,
       "row": 4
     }
   ]

@@ -87,3 +87,29 @@ class TrackButton(Button):
         center = self.point_at(0.5, 0.5)
         radius = config.GRID_SIZE * 0.25
         painter.drawEllipse(center, radius, radius)
+
+class CrossingRight(Tile):
+    def __init__(self):
+        super().__init__()
+
+    def draw(self, painter):
+        self.draw_tile_background(painter)
+        pen = QPen(QColor(config.TRACK_COLOR))
+        pen.setWidth(config.TRACK_WIDTH)
+        pen.setCapStyle(Qt.PenCapStyle.RoundCap)
+        painter.setPen(pen)
+        painter.drawLine(self.edge_point("W"), self.edge_point("E"))
+        painter.drawLine(self.edge_point("W"), self.edge_point("S"))
+
+class CrossingLeft(Tile):
+    def __init__(self):
+        super().__init__()
+
+    def draw(self, painter):
+        self.draw_tile_background(painter)
+        pen = QPen(QColor(config.TRACK_COLOR))
+        pen.setWidth(config.TRACK_WIDTH)
+        pen.setCapStyle(Qt.PenCapStyle.RoundCap)
+        painter.setPen(pen)
+        painter.drawLine(self.edge_point("W"), self.edge_point("E"))
+        painter.drawLine(self.edge_point("W"), self.edge_point("N"))

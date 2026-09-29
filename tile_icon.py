@@ -14,13 +14,15 @@ def render_tile_icon(tile_instance, size=TILE_ICON_SIZE):
     scale_factor = size / config.GRID_SIZE
     painter.scale(scale_factor, scale_factor)
 
-    original_inactive_color = config.INACTIVE_TRACK_COLOR
-    config.INACTIVE_TRACK_COLOR = config.TRACK_COLOR
-    try:
-        tile_instance.draw(painter)
-    finally:
-        config.INACTIVE_TRACK_COLOR = original_inactive_color
-        
+    #original_inactive_color = config.INACTIVE_TRACK_COLOR
+    #config.INACTIVE_TRACK_COLOR = config.TRACK_COLOR
+    # try:
+    #     tile_instance.draw(painter)
+    # finally:
+    #     config.INACTIVE_TRACK_COLOR = original_inactive_color
+
+    tile_instance.draw(painter)
+
     painter.end()
 
     return QIcon(pixmap)
