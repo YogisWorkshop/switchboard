@@ -20,6 +20,8 @@ class PanelScene(QGraphicsScene):
 
         self.tiles_by_cell = {}
 
+        self.bridge = None
+
     def drawBackground(self, painter, rect):
         scene_rect = self.sceneRect()
         draw_rect = rect.intersected(scene_rect)
@@ -141,4 +143,24 @@ class PanelScene(QGraphicsScene):
 
             self.addItem(tile)
             self.tiles_by_cell[(col, row)] = tile
-            
+
+    def set_bridge(self, bridge):
+        if self.bridge is not None:
+            self.bridge.turnout_changed.disconnect(self.on_turnout_changed)
+            self.bridge.state_changed.disconnect(self.on_state_changed)
+            self.bridge.power_changed.disconnect(self.on_power_changed)
+        self.bridge = bridge
+        if bridge is not None:
+            bridge.turnout_changed.connect(self.on_turnout_changed)
+            bridge.state_changed.connect(self.on_state_changed)
+            bridge.power_changed.connect(self.on_power_changed)
+
+    def on_power_changed(self, on):
+        self.update()
+    
+    def on_turnout_changed(self, address, protocol, diverging):
+        for tile in self.tiles_by_cell.values():
+            tile.on_station_turnout(address, protocol, diverging)
+
+    def on_state_changed(self, state):
+        self.update()

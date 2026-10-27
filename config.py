@@ -12,6 +12,8 @@ SCREEN_HEIGHT = 800
 
 TILE_ICON_SIZE = 80
 
+TRACK_WIDTH = 12
+
 PANEL_COLS = SCREEN_WIDTH // GRID_SIZE
 PANEL_ROWS = SCREEN_HEIGHT // GRID_SIZE
 
@@ -34,8 +36,22 @@ BUTTON_COLOR_BLUE_OFF = "#003366"
 SIGNAL_COLOR_RED = "#FF3333"
 SIGNAL_COLOR_GREEN = "#33CC33"
 
+CONNECTION_COLOR_CONNECTED = "#33cc33"
+CONNECTION_COLOR_CONNECTING = "#ffbf00"
+CONNECTION_COLOR_LOST = "#ff3333"
+CONNECTION_COLOR_OFF = "#999999"
 
-TRACK_WIDTH = 12
+POWER_COLOR_GO = "#33cc33"
+POWER_COLOR_STOP = "#ff3333"
+POWER_COLOR_UNKNOWN = "#999999"
+
+LONG_PRESS_MS = 1000
+
+STATION_TYPES = ["None", "ECoS", "CS3", "LocoNet", "Simulator"]
+
+STATION_TYPE = "None"
+STATION_HOST = ""
+LOCONET_PORT = ""
 
 APPEARANCE_SPECS = [
     {"key": "TILE_COLOR", "label": "Tile Color", "type": "color"},
@@ -54,7 +70,13 @@ SYSTEM_SETTINGS = [
     {"key": "GRID_SIZE", "label": "Grid Size", "type": int, "min": 20, "max": 300}
 ]
 
-SETTINGS_SPECS = APPEARANCE_SPECS + SYSTEM_SETTINGS
+INTERFACE_SETTINGS = [
+    {"key": "STATION_TYPE", "label": "Command Station", "type": "choice", "choices": STATION_TYPES},
+    {"key": "STATION_HOST", "label": "Host / IP Address", "type": str, "stations": ["ECoS", "CS3"]},
+    {"key": "LOCONET_PORT", "label": "Serial Port", "type": str, "stations": ["LocoNet"]}
+]
+
+SETTINGS_SPECS = APPEARANCE_SPECS + SYSTEM_SETTINGS + INTERFACE_SETTINGS
 
 DEFAULT_SETTINGS = {spec["key"]: globals()[spec["key"]] for spec in SETTINGS_SPECS}
 

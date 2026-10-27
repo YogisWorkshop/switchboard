@@ -1,13 +1,13 @@
-from tile import Button #Empty
+from tile import Button
 from turnout import TurnoutRight, TurnoutLeft, Turnout3Way, Signal
 from straight import (Straight, StraightBumper, Diagonal, DiagonalDouble, 
                       TrackButton, CrossingRight, CrossingLeft)
+from station_tiles import ConnectionTile, PowerTile
 
 TILE_CLASSES = {
     "TurnoutRight": TurnoutRight,
     "TurnoutLeft": TurnoutLeft,
     "Turnout3Way": Turnout3Way,
-    #"Empty": Empty,
     "Straight": Straight,
     "StraightBumper": StraightBumper,
     "Diagonal": Diagonal,
@@ -15,7 +15,8 @@ TILE_CLASSES = {
     "CrossingRight": CrossingRight,
     "CrossingLeft": CrossingLeft,
     "Signal": Signal,
-    #"Emtpy": Empty,
     "TrackButton": TrackButton,
     "Button": Button,
+    "ConnectionTile": ConnectionTile,
+    "PowerTile": PowerTile,
 }

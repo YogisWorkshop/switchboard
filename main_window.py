@@ -4,6 +4,7 @@ from PySide6.QtWidgets import (
 from PySide6.QtGui import QIcon, QShortcut, QKeySequence
 from PySide6.QtCore import Qt, QTimer, QSize
 
+from stations.factory import create_bridge
 from panel_scene import PanelScene
 from tile_registry import TILE_CLASSES
 from layout_io import save_layout, load_layout
@@ -69,6 +70,12 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(container)
 
         self.set_mode(PanelMode.OPERATE)
+
+        self.bridge = None
+        self.apply_station_settings()
+
+        # temporary test aid: Ctrl+L pulls the plug on the simulator
+        QShortcut(QKeySequence("Ctrl+L"), self, activated=self.simulate_loss)
 
     def _build_tile_palette(self):
         palette = QWidget()
@@ -243,10 +250,13 @@ class MainWindow(QMainWindow):
     def open_settings(self):
         dialog = SettingsDialog(parent=self)
         if dialog.exec() == SettingsDialog.DialogCode.Accepted:
+            before = (config.STATION_TYPE, config.STATION_HOST, config.LOCONET_PORT)
             dialog.apply_settings()
             save_settings(overrides=dialog.pending_system_values())
             self.scene.update()
             self.refresh_tile_icons()
+            if before != (config.STATION_TYPE, config.STATION_HOST, config.LOCONET_PORT):
+                self.apply_station_settings()
 
     def set_selection_buttons_enabeled(self, enabled):
         for button in self.selection_buttons:
@@ -265,3 +275,21 @@ class MainWindow(QMainWindow):
     def refresh_tile_icons(self):
         for tile_type, button in self.place_buttons.items():
             button.setIcon(render_tile_icon(tile_type()))
+
+    def apply_station_settings(self):
+        if self.bridge is not None:
+            self.bridge.stop()
+            self.scene.set_bridge(None)
+        self.bridge = create_bridge()
+        self.scene.set_bridge(self.bridge)
+        if self.bridge is not None:
+            self.bridge.start()
+
+    def simulate_loss(self):
+        if hasattr(self.bridge, "simulate_loss"):
+            self.bridge.simulate_loss()
+
+    def closeEvent(self, event):
+        if self.bridge is not None:
+            self.bridge.stop()
+        super().closeEvent(event)

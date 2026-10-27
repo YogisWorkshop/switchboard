@@ -482,7 +482,7 @@
       "rotation": 0.0,
       "label": "",
       "name": "",
-      "address": 0,
+      "address": 4,
       "protocol": "DCC",
       "col": 6,
       "row": 6
@@ -564,6 +564,102 @@
       "rotation": 0.0,
       "col": 9,
       "row": 7
+    },
+    {
+      "type": "TurnoutRight",
+      "rotation": 0.0,
+      "label": "",
+      "name": "",
+      "address": 12,
+      "protocol": "MM",
+      "col": 9,
+      "row": 8
+    },
+    {
+      "type": "ConnectionTile",
+      "rotation": 0.0,
+      "label": "",
+      "name": "",
+      "col": 14,
+      "row": 7
+    },
+    {
+      "type": "TurnoutRight",
+      "rotation": 0.0,
+      "label": "",
+      "name": "",
+      "address": 1,
+      "protocol": "DCC",
+      "col": 2,
+      "row": 0
+    },
+    {
+      "type": "TurnoutRight",
+      "rotation": 0.0,
+      "label": "",
+      "name": "",
+      "address": 2,
+      "protocol": "DCC",
+      "col": 3,
+      "row": 0
+    },
+    {
+      "type": "TurnoutRight",
+      "rotation": 0.0,
+      "label": "",
+      "name": "",
+      "address": 3,
+      "protocol": "DCC",
+      "col": 4,
+      "row": 0
+    },
+    {
+      "type": "TurnoutRight",
+      "rotation": 0.0,
+      "label": "",
+      "name": "",
+      "address": 4,
+      "protocol": "DCC",
+      "col": 5,
+      "row": 0
+    },
+    {
+      "type": "TurnoutRight",
+      "rotation": 0.0,
+      "label": "",
+      "name": "",
+      "address": 5,
+      "protocol": "MM",
+      "col": 7,
+      "row": 0
+    },
+    {
+      "type": "TurnoutRight",
+      "rotation": 0.0,
+      "label": "",
+      "name": "",
+      "address": 6,
+      "protocol": "MM",
+      "col": 8,
+      "row": 0
+    },
+    {
+      "type": "TurnoutRight",
+      "rotation": 0.0,
+      "label": "",
+      "name": "",
+      "address": 7,
+      "protocol": "MM",
+      "col": 9,
+      "row": 0
+    },
+    {
+      "type": "PowerTile",
+      "rotation": 0.0,
+      "label": "",
+      "name": "",
+      "col": 2,
+      "row": 6
     }
   ]
 }

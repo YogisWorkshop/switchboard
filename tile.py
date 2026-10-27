@@ -1,6 +1,6 @@
 from PySide6.QtWidgets import QGraphicsItem
 from PySide6.QtGui import QBrush, QColor, QPen, QPainter
-from PySide6.QtCore import Qt, QRectF, QPointF
+from PySide6.QtCore import Qt, QRectF, QPointF, QTimer
 
 import config
 from config import PanelMode, Tool
@@ -12,6 +12,7 @@ class Tile(QGraphicsItem):
     def __init__(self):
         super().__init__()
         self.selected = False
+        self._press_timer = None
         self.setTransformOriginPoint(config.GRID_SIZE / 2, config.GRID_SIZE / 2)
 
         for spec in self.property_specs:
@@ -113,8 +114,24 @@ class Tile(QGraphicsItem):
             self.on_release()
             self.update()
 
-    def on_release(self):
+    def on_station_turnout(self, address, protocol, diverging):
         pass
+    
+    def on_release(self):
+        self.cancel_long_press()
+
+    def start_long_press(self, callback):
+        """Calls callback after LONG_PRESS_MS, unless the finger lifts first."""
+        self.cancel_long_press()
+        self._press_timer = QTimer()
+        self._press_timer.setSingleShot(True)
+        self._press_timer.timeout.connect(callback)
+        self._press_timer.start(config.LONG_PRESS_MS)
+
+    def cancel_long_press(self):
+        if self._press_timer is not None:
+            self._press_timer.stop()
+            self._press_timer = None
 
     def on_tap(self):
         pass    

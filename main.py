@@ -42,9 +42,11 @@ def main():
     app.setStyleSheet(APP_STYLESHEET)
 
     window = MainWindow()
-    window.showFullScreen()
+    #window.showFullScreen()
+    window.show()
 
     sys.exit(app.exec())
 
 if __name__ == "__main__":
     main()
+

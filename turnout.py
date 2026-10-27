@@ -3,56 +3,51 @@ from PySide6.QtGui import QBrush, QColor, QPen, QPainter
 from PySide6.QtCore import Qt, QRectF, QPointF
 from tile import Tile
 
-class TurnoutRight(Tile):
+class Turnout(Tile):
+    """A two-way turnout that a command station can drive."""
     property_specs = [
         {"key": "label", "label": "Label", "type": str, "max_length": 10, "default": ""},
-        {"key": "name", "label": "Name", "type": str, "default": ""}, 
+        {"key": "name", "label": "Name", "type": str, "default": ""},
         {"key": "address", "label": "Address", "type": int, "default": 0},
-        {"key": "protocol", "label": "Protocol", "type": "choice", "choices": ["DCC", "MM"], "default": "DCC"}
-        ]
+        {"key": "protocol", "label": "Protocol", "type": "choice", "choices": ["DCC", "MM"], "default": "DCC"},
+    ]
+    branch = "S"          # which corner the diverging track leaves toward
 
     def __init__(self):
         super().__init__()
         self.thrown = False
 
     def on_tap(self):
-         self.thrown = not self.thrown
+        bridge = self.scene().bridge
+        if bridge is None:
+            self.thrown = not self.thrown        # no station: toggle locally
+        elif self.address > 0:
+            bridge.send_turnout(self.address, self.protocol, not self.thrown)
+            # the tile changes when the station confirms, not now
+
+    def on_station_turnout(self, address, protocol, diverging):
+        if address == self.address and protocol == self.protocol:
+            self.thrown = diverging
+            self.update()
 
     def draw(self, painter):
         self.draw_tile_background(painter)
 
+        # inactive route first, active route last, so the active one is on top
         if self.thrown:
             self.draw_line(painter, "W", "E", active=False)
-            self.draw_line(painter, "W", "S", active=True)
+            self.draw_line(painter, "W", self.branch, active=True)
         else:
-            self.draw_line(painter, "W", "S", active=False)
+            self.draw_line(painter, "W", self.branch, active=False)
             self.draw_line(painter, "W", "E", active=True)
 
 
-class TurnoutLeft(Tile):
-    property_specs = [
-        {"key": "label", "label": "Label", "type": str, "max_length": 10, "default": ""},
-        {"key": "name", "label": "Name", "type": str, "default": ""}, 
-        {"key": "address", "label": "Address", "type": int, "default": 0},
-        {"key": "protocol", "label": "Protocol", "type": "choice", "choices": ["DCC", "MM"], "default": "DCC"}
-        ]
+class TurnoutRight(Turnout):
+    branch = "S"
 
-    def __init__(self):
-        super().__init__()
-        self.thrown = False
 
-    def on_tap(self):
-         self.thrown = not self.thrown
-
-    def draw(self, painter):
-        self.draw_tile_background(painter)
-
-        if self.thrown:
-            self.draw_line(painter, "W", "E", active=False)
-            self.draw_line(painter, "W", "N", active=True)
-        else:
-            self.draw_line(painter, "W", "N", active=False)
-            self.draw_line(painter, "W", "E", active=True)
+class TurnoutLeft(Turnout):
+    branch = "N"
 
 
 class Turnout3Way(Tile):
