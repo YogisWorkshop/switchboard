@@ -164,3 +164,9 @@ class PanelScene(QGraphicsScene):
 
     def on_state_changed(self, state):
         self.update()
+
+    def relink(self, old_label, new_label):
+        """A primary was renamed: point its secondaries at the new label."""
+        for tile in self.tiles_by_cell.values():
+            if getattr(tile, "linked_to", "") == old_label:
+                tile.linked_to = new_label

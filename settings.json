@@ -10,7 +10,7 @@
   "SCREEN_WIDTH": 1280,
   "SCREEN_HEIGHT": 800,
   "GRID_SIZE": 80,
-  "STATION_TYPE": "ECoS",
+  "STATION_TYPE": "Simulator",
   "STATION_HOST": "127.0.0.1",
   "LOCONET_PORT": ""
 }

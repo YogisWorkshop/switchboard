@@ -1,5 +1,6 @@
 from PySide6.QtWidgets import (
-    QDialog, QFormLayout, QSpinBox, QLineEdit, QComboBox, QDialogButtonBox
+    QDialog, QFormLayout, QSpinBox, QLineEdit, QComboBox, 
+    QDialogButtonBox, QCheckBox,
 )
 from PySide6.QtCore import QSize
 
@@ -50,10 +51,16 @@ class PropertiesDialog(QDialog):
             field.setCurrentText(current_value)
             return field
 
+        if spec["type"] == bool:
+            field = QCheckBox()
+            field.setChecked(current_value)
+            return field
+
 
         raise ValueError(f"Unsupported property type: {spec['type']}")
 
     def apply_to_tile(self):
+        old_label = getattr(self.tile, "label", None)
         for key, field in self.fields.items():
             if isinstance(field, QSpinBox):
                 setattr(self.tile, key, field.value())
@@ -61,3 +68,10 @@ class PropertiesDialog(QDialog):
                 setattr(self.tile, key, field.text())
             elif isinstance(field, QComboBox):
                 setattr(self.tile, key, field.currentText())
+            elif isinstance(field, QCheckBox):
+                setattr(self.tile, key, field.isChecked())
+        new_label = getattr(self.tile, "label", None)
+        scene = self.tile.scene()
+        if scene is not None and old_label and new_label != old_label \
+                and not getattr(self.tile, "lined_to", ""):
+            scene.relink(old_label, new_label)

@@ -24,6 +24,14 @@ QSpinBox::up-button, QSpinBox::down-button {
     width: 40px;
     height: 20px;
 }
+QCheckBox {
+    font-size: 20px;
+    min-height: 40px;
+}
+QCheckBox::indicator {
+    width: 32px;
+    height: 32px;
+}
 QScrollBar:vertical {
     width: 30px;
 }
@@ -42,8 +50,8 @@ def main():
     app.setStyleSheet(APP_STYLESHEET)
 
     window = MainWindow()
-    #window.showFullScreen()
-    window.show()
+    window.showFullScreen() # comment out for debugging not in full screen
+    #window.show()          
 
     sys.exit(app.exec())
 

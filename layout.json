@@ -8,6 +8,8 @@
       "name": "",
       "address": 0,
       "protocol": "DCC",
+      "invert": false,
+      "linked_to": "",
       "col": 2,
       "row": 3
     },
@@ -24,6 +26,8 @@
       "name": "",
       "address": 0,
       "protocol": "DCC",
+      "invert": false,
+      "linked_to": "",
       "col": 3,
       "row": 2
     },
@@ -34,6 +38,8 @@
       "name": "Turnout 2",
       "address": 2,
       "protocol": "DCC",
+      "invert": false,
+      "linked_to": "",
       "col": 3,
       "row": 3
     },
@@ -186,7 +192,8 @@
       "rotation": 180.0,
       "label": "",
       "name": "",
-      "address": 0,
+      "address": 6,
+      "address2": 7,
       "protocol": "DCC",
       "col": 13,
       "row": 4
@@ -198,6 +205,8 @@
       "name": "",
       "address": 0,
       "protocol": "DCC",
+      "invert": false,
+      "linked_to": "",
       "col": 13,
       "row": 3
     },
@@ -208,6 +217,8 @@
       "name": "",
       "address": 0,
       "protocol": "DCC",
+      "invert": false,
+      "linked_to": "",
       "col": 12,
       "row": 3
     },
@@ -218,6 +229,8 @@
       "name": "",
       "address": 0,
       "protocol": "DCC",
+      "invert": false,
+      "linked_to": "",
       "col": 11,
       "row": 2
     },
@@ -366,6 +379,8 @@
       "name": "",
       "address": 0,
       "protocol": "DCC",
+      "invert": false,
+      "linked_to": "",
       "col": 5,
       "row": 5
     },
@@ -418,6 +433,8 @@
       "name": "",
       "address": 0,
       "protocol": "DCC",
+      "invert": false,
+      "linked_to": "",
       "col": 14,
       "row": 4
     },
@@ -458,6 +475,8 @@
       "name": "",
       "address": 0,
       "protocol": "DCC",
+      "invert": false,
+      "linked_to": "",
       "col": 11,
       "row": 1
     },
@@ -484,6 +503,8 @@
       "name": "",
       "address": 4,
       "protocol": "DCC",
+      "invert": false,
+      "linked_to": "",
       "col": 6,
       "row": 6
     },
@@ -572,6 +593,8 @@
       "name": "",
       "address": 12,
       "protocol": "MM",
+      "invert": true,
+      "linked_to": "",
       "col": 9,
       "row": 8
     },
@@ -590,6 +613,8 @@
       "name": "",
       "address": 1,
       "protocol": "DCC",
+      "invert": false,
+      "linked_to": "",
       "col": 2,
       "row": 0
     },
@@ -600,6 +625,8 @@
       "name": "",
       "address": 2,
       "protocol": "DCC",
+      "invert": false,
+      "linked_to": "",
       "col": 3,
       "row": 0
     },
@@ -610,6 +637,8 @@
       "name": "",
       "address": 3,
       "protocol": "DCC",
+      "invert": false,
+      "linked_to": "",
       "col": 4,
       "row": 0
     },
@@ -620,6 +649,8 @@
       "name": "",
       "address": 4,
       "protocol": "DCC",
+      "invert": false,
+      "linked_to": "",
       "col": 5,
       "row": 0
     },
@@ -630,6 +661,8 @@
       "name": "",
       "address": 5,
       "protocol": "MM",
+      "invert": false,
+      "linked_to": "",
       "col": 7,
       "row": 0
     },
@@ -640,6 +673,8 @@
       "name": "",
       "address": 6,
       "protocol": "MM",
+      "invert": false,
+      "linked_to": "",
       "col": 8,
       "row": 0
     },
@@ -650,6 +685,8 @@
       "name": "",
       "address": 7,
       "protocol": "MM",
+      "invert": false,
+      "linked_to": "",
       "col": 9,
       "row": 0
     },
@@ -658,8 +695,33 @@
       "rotation": 0.0,
       "label": "",
       "name": "",
+      "style": "Symbol",
       "col": 2,
       "row": 6
+    },
+    {
+      "type": "TurnoutRight",
+      "rotation": 180.0,
+      "label": "SL1",
+      "name": "",
+      "address": 1,
+      "protocol": "DCC",
+      "invert": false,
+      "linked_to": "",
+      "col": 12,
+      "row": 0
+    },
+    {
+      "type": "TurnoutRight",
+      "rotation": 0.0,
+      "label": "",
+      "name": "",
+      "address": 0,
+      "protocol": "DCC",
+      "invert": false,
+      "linked_to": "",
+      "col": 13,
+      "row": 0
     }
   ]
 }

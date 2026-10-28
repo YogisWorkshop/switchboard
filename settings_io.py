@@ -9,9 +9,12 @@ SETTINGS_FILE = os.path.join(os.path.dirname(__file__), "settings.json")
 def save_settings(overrides=None):
     data = {spec["key"]: getattr(config, spec["key"]) for spec in SETTINGS_SPECS}
     if overrides:
-        data.update(overrides)
-    with open(SETTINGS_FILE, "w") as f:
-        json.dump(data, f, indent=2)
+            data.update(overrides)
+    text = json.dumps(data, indent=2)       # if this fails, the real file is untouched
+    temp_file = SETTINGS_FILE + ".tmp"
+    with open(temp_file, "w") as f:
+        f.write(text)
+    os.replace(temp_file, SETTINGS_FILE)
 
 def load_settings():
     try:

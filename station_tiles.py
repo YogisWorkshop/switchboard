@@ -1,5 +1,7 @@
+import math
+
 from PySide6.QtWidgets import QApplication, QMessageBox
-from PySide6.QtGui import QBrush, QColor, QPen
+from PySide6.QtGui import QBrush, QColor, QFont, QFontMetrics, QPen, QPolygonF
 from PySide6.QtCore import Qt, QRectF, QPointF
 
 import config
@@ -112,35 +114,61 @@ class ConnectionTile(StationTile):
 
 
 class PowerTile(StationTile):
-    """Track power. Tap = STOP. Long-press = GO."""
+    """Track power. Tap = STOP. Long-press = GO.
 
-    def _power_color(self):
+    Symbol and Round show the STATE of the power. Stop sign shows the ACTION
+    a press will do right now.
+    """
+    property_specs = StationTile.property_specs + [
+        {"key": "style", "label": "Style", "type": "choice",
+         "choices": ["Symbol", "Round", "Stop sign"], "default": "Symbol"},
+    ]
+
+    # ---- behavior -------------------------------------------------------
+
+    def _action(self):
+        """What a press does right now: "STOP", "GO", or None (nothing)."""
+        bridge = self._bridge()
+        if bridge is None or bridge.state != ConnectionState.CONNECTED:
+            return None
+        # stopped: starting takes a long press. Running, or not known: one tap stops.
+        return "GO" if bridge.power is False else "STOP"
+
+    def on_tap(self):
+        action = self._action()
+        if action == "GO":
+            self.start_long_press(self._go)
+        elif action == "STOP":
+            self._bridge().send_power(False)
+
+    def _go(self):
+        self._press_timer = None
+        if self._action() == "GO":
+            self._bridge().send_power(True)
+
+    # ---- drawing --------------------------------------------------------
+
+    def _state_color(self):
         bridge = self._bridge()
         if bridge is None or bridge.power is None:
             return config.POWER_COLOR_UNKNOWN
         return config.POWER_COLOR_GO if bridge.power else config.POWER_COLOR_STOP
 
-    def on_tap(self):
-        bridge = self._bridge()
-        if bridge is None or bridge.state != ConnectionState.CONNECTED:
-            return
-        if bridge.power is False:
-            # stopped: starting takes a long press
-            self.start_long_press(self._go)
-        else:
-            # running, or not known: stopping is always one tap
-            bridge.send_power(False)
-
-    def _go(self):
-        self._press_timer = None
-        bridge = self._bridge()
-        if bridge is not None and bridge.power is False:
-            bridge.send_power(True)
+    def _action_color(self):
+        return {"STOP": config.POWER_COLOR_STOP,
+                "GO": config.POWER_COLOR_GO}.get(self._action(), config.POWER_COLOR_UNKNOWN)
 
     def draw(self, painter):
         self.draw_tile_background(painter)
+        if self.style == "Round":
+            self._draw_round(painter)
+        elif self.style == "Stop sign":
+            self._draw_stop_sign(painter)
+        else:
+            self._draw_symbol(painter)
 
-        pen = QPen(QColor(self._power_color()))
+    def _draw_symbol(self, painter):
+        pen = QPen(QColor(self._state_color()))
         pen.setWidth(max(4, config.TRACK_WIDTH // 2))
         pen.setCapStyle(Qt.PenCapStyle.RoundCap)
         painter.setPen(pen)
@@ -152,3 +180,49 @@ class PowerTile(StationTile):
         painter.drawArc(int(left), int(left + size * 0.1), int(size), int(size),
                         125 * 16, 290 * 16)
         painter.drawLine(self.point_at(0.5, 0.2), self.point_at(0.5, 0.5))
+
+    def _draw_round(self, painter):
+        """An indicator lamp: no text, so it reads as a display, not a button."""
+        pen = QPen(QColor(config.TRACK_COLOR))
+        pen.setWidth(3)
+        painter.setPen(pen)
+        painter.setBrush(QBrush(QColor(self._state_color())))
+        radius = config.GRID_SIZE * 0.30
+        painter.drawEllipse(self.point_at(0.5, 0.5), radius, radius)
+
+    def _octagon(self, radius):
+        center = self.point_at(0.5, 0.5)
+        points = []
+        for k in range(8):
+            angle = math.radians(22.5 + 45 * k)      # flat top and bottom, like the sign
+            points.append(QPointF(center.x() + radius * math.cos(angle),
+                                  center.y() + radius * math.sin(angle)))
+        return QPolygonF(points)
+
+    def _draw_stop_sign(self, painter):
+        """Shows what pressing does: STOP when you can stop, GO when you can start."""
+        action = self._action()
+        color = QColor(self._action_color())
+        text_color = QColor("white") if action != "GO" else QColor(config.TRACK_COLOR)
+
+        painter.setPen(Qt.PenStyle.NoPen)
+        painter.setBrush(QBrush(color))
+        painter.drawPolygon(self._octagon(config.GRID_SIZE * 0.44))
+
+        border = QPen(QColor("white") if action is not None else QColor(config.TILE_COLOR))
+        border.setWidth(max(2, config.GRID_SIZE // 30))
+        painter.setPen(border)
+        painter.setBrush(Qt.BrushStyle.NoBrush)
+        painter.drawPolygon(self._octagon(config.GRID_SIZE * 0.38))
+
+        text = action or "STOP"
+        font = QFont()
+        font.setBold(True)
+        pixel_size = int(config.GRID_SIZE * 0.22)
+        font.setPixelSize(pixel_size)
+        while pixel_size > 6 and QFontMetrics(font).horizontalAdvance(text) > config.GRID_SIZE * 0.58:
+            pixel_size -= 1                          # shrink until it fits inside the sign
+            font.setPixelSize(pixel_size)
+        painter.setFont(font)
+        painter.setPen(text_color if action is not None else QColor(config.TILE_COLOR))
+        painter.drawText(self.boundingRect(), Qt.AlignmentFlag.AlignCenter, text)
